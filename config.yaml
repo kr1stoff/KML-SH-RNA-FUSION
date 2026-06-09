@@ -1,0 +1,30 @@
+# samples_tsv: "tests/example.tsv"
+
+conda:
+  python: python3.12
+  fastqc: basic
+  multiqc: basic
+  fastp: basic2
+  star: basic2
+  star_fusion: basic2
+  arriba: fusion
+  samtools: basic
+
+threads:
+  low: 4
+  medium: 8
+  high: 16
+
+database:
+  reference: /data/mengxf/Database/STAR/GRCh38_gencode_v44_CTAT_lib_Oct292023.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa
+  gtf: /data/mengxf/Database/STAR/GRCh38_gencode_v44_CTAT_lib_Oct292023.plug-n-play/ctat_genome_lib_build_dir/ref_annot.gtf
+  star_index: /data/mengxf/Database/STAR/GRCh38_gencode_v44_CTAT_lib_Oct292023.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa.star.idx
+  ctat_lib: /data/mengxf/Database/STAR/GRCh38_gencode_v44_CTAT_lib_Oct292023.plug-n-play/ctat_genome_lib_build_dir
+  # conda 安装 arriba 在 var/lib/arriba 路径下有这些文件
+  arriba_blacklist: /home/mengxf/miniforge3/envs/fusion/var/lib/arriba/blacklist_hg38_GRCh38_v2.5.1.tsv.gz
+  arriba_known_fusions: /home/mengxf/miniforge3/envs/fusion/var/lib/arriba/known_fusions_hg38_GRCh38_v2.5.1.tsv.gz
+  arriba_protein_domains: /home/mengxf/miniforge3/envs/fusion/var/lib/arriba/protein_domains_hg38_GRCh38_v2.5.1.gff3
+  arriba_cytobands: /home/mengxf/miniforge3/envs/fusion/var/lib/arriba/cytobands_hg38_GRCh38_v2.5.1.tsv
+
+fastp:
+  extra: "--qualified_quality_phred 20 --length_required 36"

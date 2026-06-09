@@ -1,0 +1,40 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+type: object
+properties:
+  samples_tsv:
+    type: string
+  workflow:
+    type: object
+    properties:
+      type:
+        type: string
+      steps:
+        type: object
+  conda:
+    type: object
+  threads:
+    type: object
+    properties:
+      low: {type: integer}
+      medium: {type: integer}
+      high: {type: integer}
+  database:
+    type: object
+    properties:
+      reference: {type: string}
+      gtf: {type: string}
+      star_index: {type: string}
+      ctat_lib: {type: string}
+      arriba_blacklist: {type: string}
+      arriba_known_fusions: {type: string}
+      arriba_protein_domains: {type: string}
+      arriba_cytobands: {type: string}
+  fastp:
+    type: object
+    properties:
+      extra: {type: string}
+required:
+  - samples_tsv
+  - conda
+  - threads
+  - database
