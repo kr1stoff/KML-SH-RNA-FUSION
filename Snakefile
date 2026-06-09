@@ -17,11 +17,14 @@ samples = samples_df["sample"].tolist()
 
 rule all:
     input:
-        expand("annotation/{sample}_filtered_fusions.tsv", sample=samples),
-        expand("final/{sample}_fusion_report.tsv", sample=samples),
-        expand("final/{sample}_fusion_report.xlsx", sample=samples),
-        expand("final/{sample}_priority_fusions.tsv", sample=samples),
+        # todo: star-fusion 无结果会报错, 后面按需再调试
+        # expand("annotation/{sample}_filtered_fusions.tsv", sample=samples),
+        # expand("final/{sample}_fusion_report.tsv", sample=samples),
+        # expand("final/{sample}_fusion_report.xlsx", sample=samples),
+        # expand("final/{sample}_priority_fusions.tsv", sample=samples),
         "qc/multiqc",
+        expand("star_fusion/{sample}/star-fusion.fusion_predictions.abridged.tsv", sample=samples),
+        expand("arriba/{sample}_fusions.pdf", sample=samples),
 
 
 include: "rules/common.smk"

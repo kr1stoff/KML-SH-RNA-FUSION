@@ -1,4 +1,7 @@
 import pandas as pd
+import sys
+
+sys.stderr = open(snakemake.log[0], "w")
 
 sf = pd.read_csv(snakemake.input.sf_abridged, sep="\t", comment="#")
 sf.columns = sf.columns.str.lstrip("#").str.strip()
@@ -27,17 +30,21 @@ arr_renamed = arr.rename(columns={
     "transcript_id1": "tx_id1_arr", "transcript_id2": "tx_id2_arr",
 })
 arr_renamed["tool_arr"] = True
-arr_renamed["gene_pair"] = arr_renamed["gene1_arr"] + "::" + arr_renamed["gene2_arr"]
+arr_renamed["gene_pair"] = arr_renamed["gene1_arr"] + \
+    "::" + arr_renamed["gene2_arr"]
+
 
 def normalize_bp(bp):
     return str(bp).split(":")[0] + ":" + str(bp).split(":")[1]
+
 
 sf_renamed["bp1_norm"] = sf_renamed["breakpoint1_sf"].apply(normalize_bp)
 sf_renamed["bp2_norm"] = sf_renamed["breakpoint2_sf"].apply(normalize_bp)
 arr_renamed["bp1_norm"] = arr_renamed["breakpoint1_arr"].apply(normalize_bp)
 arr_renamed["bp2_norm"] = arr_renamed["breakpoint2_arr"].apply(normalize_bp)
 
-merged_bp = pd.merge(sf_renamed, arr_renamed, on=["bp1_norm", "bp2_norm"], suffixes=("_sf", "_arr"), how="outer")
+merged_bp = pd.merge(sf_renamed, arr_renamed, on=[
+                     "bp1_norm", "bp2_norm"], suffixes=("_sf", "_arr"), how="outer")
 
 unmatched_sf = sf_renamed[~sf_renamed.set_index(["bp1_norm", "bp2_norm"]).index.isin(
     merged_bp.dropna(subset=["gene_pair_sf"]).set_index(["bp1_norm", "bp2_norm"]).index)]
